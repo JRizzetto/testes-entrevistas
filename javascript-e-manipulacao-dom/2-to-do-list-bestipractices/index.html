@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <h1>To-Do List</h1>
+      <div class="line"></div>
+
+      <div class="card">
+        <form id="form">
+          <input type="text" id="taskInput" placeholder="Type a task ..." />
+          <button type="submit">Add</button>
+        </form>
+      </div>
+
+      <p id="error"></p>
+
+      <ul id="list">
+        <ul id="list"></ul>
+      </ul>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
