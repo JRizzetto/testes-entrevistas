@@ -9,6 +9,9 @@ function App() {
   const [error, setError] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
+  const [list, setList] = useState([]);
+  const [loadingList, setLoadingList] = useState(true);
+  const [errorList, setErrorList] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -34,11 +37,35 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    setLoadingList(true);
+    setErrorList("");
+
+    fetch("http://localhost:3000/message")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setList(data.message || data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorList(err.message);
+      })
+      .finally(() => {
+        setLoadingList(false);
+      });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/message", {
+      const response = await fetch("http://localhost:3000/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +75,10 @@ function App() {
           email: inputEmail,
         }),
       });
+
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (err) {
       console.log(err);
     }
@@ -55,13 +86,33 @@ function App() {
 
   return (
     <div className="app">
-      {loading ? (
-        <h1>Loading...</h1>
-      ) : error ? (
-        <h1>{error}</h1>
-      ) : (
-        <h1>{message}</h1>
-      )}
+      <div>
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : error ? (
+          <h1>{error}</h1>
+        ) : (
+          <h1>{message}</h1>
+        )}
+      </div>
+
+      <div>
+        {loadingList ? (
+          <h1>loading...</h1>
+        ) : errorList ? (
+          <h1>{errorList}</h1>
+        ) : (
+          <ul>
+            {list.map((item) => (
+              <li key={item.id}>
+                <strong>{item.name}: </strong>
+                {item.email}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <div>
         <form onSubmit={handleSubmit}>
           <input
