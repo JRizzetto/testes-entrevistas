@@ -8,8 +8,8 @@ app.use(express.json());
 
 let dataFront = [];
 
-app.get("/ping", (req, res) => {
-  res.send("Pong");
+app.get("/message", (req, res) => {
+  res.json(dataFront);
 });
 
 app.post("/message", (req, res) => {
@@ -25,10 +25,6 @@ app.post("/message", (req, res) => {
   res.status(201).json({ ok: true, data: newDatas });
 });
 
-app.get("/message", (req, res) => {
-  res.json(dataFront);
-});
-
 app.delete("/message/:id", (req, res) => {
   req.params.id;
   const data = Number(req.params.id);
@@ -41,6 +37,21 @@ app.delete("/message/:id", (req, res) => {
   }
 
   return res.status(200).json({ ok: true });
+});
+
+app.get("/message/:id", (req, res) => {
+  const data = req.params.id;
+  const id = Number(data);
+
+  console.log(id);
+
+  const item = dataFront.find((item) => item.id === id);
+
+  console.log(item);
+
+  res.status(404).json({ message: "Message not found" });
+  res.status(201).json({ ok: true });
+  res.json(item);
 });
 
 app.listen(port, () => {

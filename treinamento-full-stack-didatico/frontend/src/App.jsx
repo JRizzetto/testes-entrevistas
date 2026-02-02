@@ -1,43 +1,15 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import "./App.css";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [list, setList] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
   const [errorList, setErrorList] = useState("");
 
-  useEffect(() => {
-    setLoading(true);
-    setError("");
-
-    fetch("http://localhost:3000/ping")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erro: ${response.status}`);
-        }
-
-        return response.text();
-      })
-      .then((data) => {
-        setMessage(data.message || data);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
+  const loadMessages = () => {
     setLoadingList(true);
     setErrorList("");
 
@@ -50,7 +22,7 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        setList(data.message || data);
+        setList(data);
       })
       .catch((err) => {
         console.log(err);
@@ -59,6 +31,10 @@ function App() {
       .finally(() => {
         setLoadingList(false);
       });
+  };
+
+  useEffect(() => {
+    loadMessages();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -76,9 +52,28 @@ function App() {
         }),
       });
 
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+
       const data = await response.json();
-      console.log(data);
-      return data;
+
+      setInputName("");
+      setInputEmail("");
+
+      loadMessages();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/message/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+      loadMessages();
     } catch (err) {
       console.log(err);
     }
@@ -86,16 +81,6 @@ function App() {
 
   return (
     <div className="app">
-      <div>
-        {loading ? (
-          <h1>Loading...</h1>
-        ) : error ? (
-          <h1>{error}</h1>
-        ) : (
-          <h1>{message}</h1>
-        )}
-      </div>
-
       <div>
         {loadingList ? (
           <h1>loading...</h1>
@@ -107,6 +92,7 @@ function App() {
               <li key={item.id}>
                 <strong>{item.name}: </strong>
                 {item.email}
+                <button onClick={() => handleDelete(item.id)}>delete</button>
               </li>
             ))}
           </ul>
