@@ -6,7 +6,23 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-let dataFront = [];
+let dataFront = [
+  {
+    id: 1770130787796,
+    name: "Jefferson Rizzetto",
+    email: "jeffersonrizzetto@gmail.com",
+  },
+  {
+    id: 1770130795092,
+    name: "James Bond",
+    email: "james@gmail.com",
+  },
+  {
+    id: 1770130808907,
+    name: "janaina",
+    email: "janaina@gmail.com",
+  },
+];
 
 app.get("/message", (req, res) => {
   res.json(dataFront);
@@ -43,15 +59,48 @@ app.get("/message/:id", (req, res) => {
   const data = req.params.id;
   const id = Number(data);
 
-  console.log(id);
-
   const item = dataFront.find((item) => item.id === id);
 
-  console.log(item);
+  if (!item) {
+    res.status(404).json({ message: "not Found" });
+    return;
+  }
 
-  res.status(404).json({ message: "Message not found" });
-  res.status(201).json({ ok: true });
-  res.json(item);
+  return res.status(200).json(item);
+});
+
+app.put("/message/:id", (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const id = Number(req.params.id);
+  let found = false;
+
+  if (!name || !email) {
+    res.status(400).json({ message: "Input can't be empty" });
+    return;
+  }
+
+  const newArray = dataFront.map((e) => {
+    if (e.id === id) {
+      found = true;
+      return {
+        ...e,
+        name,
+        email,
+      };
+    }
+    return e;
+  });
+
+  if (found === false) {
+    res.status(404).json({ message: "Message not found" });
+    return;
+  }
+
+  let updatedItem = newArray.find((e) => e.id === id);
+
+  dataFront = newArray;
+  return res.status(200).json(updatedItem);
 });
 
 app.listen(port, () => {
