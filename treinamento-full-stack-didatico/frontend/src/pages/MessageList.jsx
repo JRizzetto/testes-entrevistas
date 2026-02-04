@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 function MessageList() {
@@ -7,6 +8,8 @@ function MessageList() {
   const [list, setList] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
   const [errorList, setErrorList] = useState("");
+
+  const navigate = useNavigate();
 
   const loadMessages = () => {
     setLoadingList(true);
@@ -92,6 +95,9 @@ function MessageList() {
                 <strong>{item.name}: </strong>
                 {item.email}
                 <button onClick={() => handleDelete(item.id)}>delete</button>
+                <button onClick={() => navigate(`/edit/${item.id}`)}>
+                  Update
+                </button>
               </li>
             ))}
           </ul>
