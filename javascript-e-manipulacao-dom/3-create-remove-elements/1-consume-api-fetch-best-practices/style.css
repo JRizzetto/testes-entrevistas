@@ -50,11 +50,15 @@ body {
 #loading {
   width: 100%;
   font-size: 2rem;
-  display: flex;
+  display: none;
   gap: 10px;
   align-items: center;
   justify-content: center;
   margin: 10px 0;
+}
+
+#loading.show {
+  display: flex;
 }
 
 .divLoading {
@@ -68,11 +72,15 @@ body {
 
 #error {
   width: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 10px 0;
+}
+
+#error.show {
+  display: flex;
 }
 
 #error p {
