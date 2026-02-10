@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  width: 100%;
+  max-width: 450px;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  border: 1px solid #eaeaea;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+#userName {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  text-align: center;
+}
+
+.card p {
+  margin-bottom: 18px;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.card p strong {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.3re;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 10px 0 25px 0;
+  text-align: center;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.badge--high {
+  background-color: #e8f5e9;
+  color: #27ae60;
+  border: 2px solid #a5d6a7;
+}
+
+.badge--mid {
+  background-color: #fff8e1;
+  color: #f39c12;
+  border: 2px solid #ffe082;
+}
+
+.badge--low {
+  background-color: #ffebee;
+  color: #e74c3c;
+  border: 2px solid #ef9a9a;
+}
+
+.badge--high:hover,
+.badge--mid:hover,
+.badge--low:hover {
+  transform: scale(1.03);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}

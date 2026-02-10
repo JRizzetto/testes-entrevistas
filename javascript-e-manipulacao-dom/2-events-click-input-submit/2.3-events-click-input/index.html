@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercício 1 — Part 2 (Events: click + input)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="card">
+      <h2>Contador</h2>
+
+      <p>Valor: <strong id="countText">0</strong></p>
+
+      <input type="number" id="stepInput" value="1" min="1" max="10" />
+
+      <div id="controls">
+        <button data-action="dec">-</button>
+        <button data-action="inc">+</button>
+        <button data-action="reset">Reset</button>
+      </div>
+
+      <p id="hint">Step: 1</p>
+    </section>
+    <script src="./script.js"></script>
+  </body>
+</html>
