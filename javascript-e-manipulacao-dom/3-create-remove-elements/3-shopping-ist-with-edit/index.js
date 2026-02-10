@@ -4,57 +4,85 @@ const errorEl = document.getElementById("error");
 const listEl = document.getElementById("list");
 
 let items = [];
-let countId = 0;
-
-function addText() {
-  addBtnEl.addEventListener("click", () => {
-    const inputValue = itemInputEl.value.trim();
-
-    if (!inputValue) {
-      errorEl.textContent = "Type something!";
-      return;
-    }
-    errorEl.textContent = "";
-
-    items.push({
-      id: countId++,
-      text: inputValue,
-    });
-
-    itemInputEl.value = "";
-
-    render();
-  });
-}
-addText();
+let nextId = 0;
+let editingId = null;
 
 function render() {
-  listEl.textContent = "";
+  listEl.innerHTML = "";
 
   items.forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item.text;
+
+    const buttonEdit = document.createElement("button");
+    buttonEdit.textContent = "Edit";
+    buttonEdit.dataset.action = "edit";
+    buttonEdit.dataset.id = item.id;
+
+    const buttonRemove = document.createElement("button");
+    buttonRemove.textContent = "Remove";
+    buttonRemove.dataset.action = "remove";
+    buttonRemove.dataset.id = item.id;
+
+    li.appendChild(buttonEdit);
+    li.appendChild(buttonRemove);
     listEl.appendChild(li);
-
-    const button = document.createElement("button");
-    button.textContent = "Remove";
-    li.appendChild(button);
-
-    button.dataset.action = "remove";
-    button.dataset.id = item.id;
   });
 }
 
-function btnRemove() {
-  listEl.addEventListener("click", (event) => {
-    const btn = event.target.closest("button[data-action='remove']");
-    if (!btn) return;
+addBtnEl.addEventListener("click", () => {
+  const value = itemInputEl.value.trim();
 
-    const id = Number(btn.dataset.id);
+  if (!value) {
+    errorEl.textContent = "Type something!";
+    return;
+  }
+
+  errorEl.textContent = "";
+
+  if (editingId === null) {
+    items.push({ id: nextId++, text: value });
+  } else {
+    items = items.map((item) =>
+      item.id === editingId ? { ...item, text: value } : item,
+    );
+
+    editingId = null;
+    addBtnEl.textContent = "Add";
+  }
+
+  itemInputEl.value = "";
+  render();
+});
+
+listEl.addEventListener("click", (event) => {
+  const btn = event.target.closest("button[data-action]");
+  if (!btn) return;
+
+  const action = btn.dataset.action;
+  const id = Number(btn.dataset.id);
+
+  if (action === "remove") {
     items = items.filter((item) => item.id !== id);
 
+    if (editingId === id) {
+      editingId = null;
+      addBtnEl.textContent = "Add";
+      itemInputEl.value = "";
+    }
+
     render();
-  });
-}
-btnRemove();
+  }
+
+  if (action === "edit") {
+    const item = items.find((item) => item.id === id);
+    if (!item) return;
+
+    editingId = id;
+    itemInputEl.value = item.text;
+    addBtnEl.textContent = "Save";
+    itemInputEl.focus();
+  }
+});
+
 render();
