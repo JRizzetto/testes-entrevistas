@@ -17,7 +17,6 @@ limitar entre 1 e 10
 salvar em state.step
 chamar render()
 
-
 3 - Botões dentro de #controls (evento click no container — delegation):
 data-action="inc": state.count += state.step
 data-action="dec": state.count -= state.step
@@ -35,3 +34,43 @@ Sem “um listener por botão”
 Obrigatório: 1 listener no #controls (delegation)
 Nada de innerHTML
 */
+
+const countTextEl = document.querySelector("#countText");
+const hintEl = document.querySelector("#hint");
+const stepInputEl = document.querySelector("#stepInput");
+const controlsEl = document.getElementById("controls");
+
+const state = {
+  count: 0,
+  step: 1,
+};
+
+function clamp(n, max, min) {
+  return Math.min(Math.max(n, min), max);
+}
+
+function render() {
+  countTextEl.textContent = state.count;
+  hintEl.textContent = `Step: ${state.step}`;
+  stepInputEl.value = state.step;
+}
+
+stepInputEl.addEventListener("input", (e) => {
+  const raw = Number(e.target.value);
+  const nextStep = clamp(Number.isNaN(raw) ? 1 : raw, 1, 10);
+
+  state.step = nextStep;
+  render();
+});
+
+controlsEl.addEventListener("click", (e) => {
+  const action = e.target.dataset.action;
+
+  if (action === "dec") state.count -= state.step;
+  if (action === "inc") state.count += state.step;
+  if (action === "reset") state.count = 0;
+
+  render();
+});
+
+render();
