@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercício 2 — Part 2 (Events: input + submit + delegation)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="card">
+      <h2>Tarefas</h2>
+
+      <form id="taskForm">
+        <input
+          id="taskInput"
+          type="text"
+          placeholder="Digite uma tarefa"
+          maxlength="20"
+        />
+        <button type="submit">Adicionar</button>
+      </form>
+
+      <p id="errorText" class="error">—</p>
+
+      <p>Total: <strong id="totalText">0</strong></p>
+    </section>
+    <script src="./script.js"></script>
+  </body>
+</html>
